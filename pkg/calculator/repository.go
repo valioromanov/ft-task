@@ -40,8 +40,13 @@ func (c *Calculator) Calculate(numbers []int, operators []string) int {
 
 func (c *Calculator) Validate(exp string) ([]int, []string, error) {
 	splitExp := strings.Split(exp, "What is")
+	if len(splitExp) <= 1 {
+		return nil, nil, fmt.Errorf("expressions with invalid syntax")
+	}
+
 	mathEquation := replaceOperators(strings.TrimSpace(splitExp[1]))
 	nums, ops := getNumbersAndOps(strings.Split(mathEquation, " "))
+
 	if len(nums) == 0 {
 		return nil, nil, fmt.Errorf("non-math questions")
 	}
