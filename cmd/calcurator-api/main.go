@@ -11,6 +11,6 @@ func main() {
 	calculatorRepo := calculatorRepo.Calculator{}
 	calculatorController := calculator.NewCalculatorController(&calculatorRepo)
 	presenter := calculator.NewPresenter(calculatorController)
-	exp := "What is 3 plus 2 plus"
+	exp := "3 plus 2 plus"
 	fmt.Print(presenter.Evaluate(exp))
 }
