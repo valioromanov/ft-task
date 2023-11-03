@@ -46,7 +46,6 @@ func (c *Calculator) Validate(exp string) ([]int, []string, error) {
 
 	mathEquation := replaceOperators(strings.TrimSpace(splitExp[1]))
 	nums, ops := getNumbersAndOps(strings.Split(mathEquation, " "))
-
 	if len(nums) == 0 {
 		return nil, nil, fmt.Errorf("non-math questions")
 	}
@@ -54,7 +53,7 @@ func (c *Calculator) Validate(exp string) ([]int, []string, error) {
 		return nil, nil, fmt.Errorf("expressions with invalid syntax")
 	}
 
-	if checkUsupportedOpperators(ops) && len(ops) > 0 {
+	if !checkUsupportedOpperators(ops) && len(ops) > 0 {
 		return nil, nil, fmt.Errorf("unsupported operations")
 	}
 

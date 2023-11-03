@@ -1,9 +1,7 @@
 package calculator
 
-import "fmt"
-
 type CalculatorController interface {
-	Evaluate(string) int
+	Evaluate(string) (int, error)
 }
 
 type CalculatorRepository interface {
@@ -21,10 +19,11 @@ func NewCalculatorController(calculatorRepo CalculatorRepository) CalculatorCont
 	}
 }
 
-func (c *calculatorController) Evaluate(expression string) int {
+func (c *calculatorController) Evaluate(expression string) (int, error) {
 	nums, ops, err := c.calculatorRepo.Validate(expression)
+	//TODO add inserting in error in-memory
 	if err != nil {
-		fmt.Println(err.Error())
+		return 0, err
 	}
-	return c.calculatorRepo.Calculate(nums, ops)
+	return c.calculatorRepo.Calculate(nums, ops), nil
 }
