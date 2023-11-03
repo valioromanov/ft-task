@@ -49,12 +49,13 @@ func (c *Calculator) Validate(exp string) ([]int, []string, error) {
 	if len(nums) == 0 {
 		return nil, nil, fmt.Errorf("non-math questions")
 	}
-	if len(nums) <= len(ops) {
-		return nil, nil, fmt.Errorf("expressions with invalid syntax")
-	}
 
 	if !checkUsupportedOpperators(ops) && len(ops) > 0 {
 		return nil, nil, fmt.Errorf("unsupported operations")
+	}
+
+	if len(nums) <= len(ops) {
+		return nil, nil, fmt.Errorf("expressions with invalid syntax")
 	}
 
 	return nums, ops, nil
