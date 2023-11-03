@@ -8,6 +8,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+//go:generate mockgen --source=presenter.go --destination mocks/presenter.go --package mocks
 type CalculatorController interface {
 	Evaluate(string) (int, error)
 	Validate(string) error

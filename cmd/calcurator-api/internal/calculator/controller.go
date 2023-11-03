@@ -4,6 +4,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+//go:generate mockgen --source=controller.go --destination mocks/controller.go --package mocks
 type CalculatorRepository interface {
 	Calculate([]int, []string) int
 	Validate(string) ([]int, []string, error)
