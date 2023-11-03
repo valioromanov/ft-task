@@ -5,6 +5,12 @@ import (
 )
 
 //go:generate mockgen --source=controller.go --destination mocks/controller.go --package mocks
+type CalculatorController interface {
+	Evaluate(string) (int, error)
+	Validate(string) error
+	GetErrors() InvalidExpression
+}
+
 type CalculatorRepository interface {
 	Calculate([]int, []string) int
 	Validate(string) ([]int, []string, error)
