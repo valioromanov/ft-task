@@ -5,10 +5,77 @@
 package mocks
 
 import (
+	calculator "ft-calculator/cmd/calcurator-api/internal/calculator"
 	reflect "reflect"
 
 	gomock "github.com/golang/mock/gomock"
 )
+
+// MockCalculatorController is a mock of CalculatorController interface.
+type MockCalculatorController struct {
+	ctrl     *gomock.Controller
+	recorder *MockCalculatorControllerMockRecorder
+}
+
+// MockCalculatorControllerMockRecorder is the mock recorder for MockCalculatorController.
+type MockCalculatorControllerMockRecorder struct {
+	mock *MockCalculatorController
+}
+
+// NewMockCalculatorController creates a new mock instance.
+func NewMockCalculatorController(ctrl *gomock.Controller) *MockCalculatorController {
+	mock := &MockCalculatorController{ctrl: ctrl}
+	mock.recorder = &MockCalculatorControllerMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockCalculatorController) EXPECT() *MockCalculatorControllerMockRecorder {
+	return m.recorder
+}
+
+// Evaluate mocks base method.
+func (m *MockCalculatorController) Evaluate(arg0 string) (int, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Evaluate", arg0)
+	ret0, _ := ret[0].(int)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Evaluate indicates an expected call of Evaluate.
+func (mr *MockCalculatorControllerMockRecorder) Evaluate(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Evaluate", reflect.TypeOf((*MockCalculatorController)(nil).Evaluate), arg0)
+}
+
+// GetErrors mocks base method.
+func (m *MockCalculatorController) GetErrors() calculator.InvalidExpression {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetErrors")
+	ret0, _ := ret[0].(calculator.InvalidExpression)
+	return ret0
+}
+
+// GetErrors indicates an expected call of GetErrors.
+func (mr *MockCalculatorControllerMockRecorder) GetErrors() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetErrors", reflect.TypeOf((*MockCalculatorController)(nil).GetErrors))
+}
+
+// Validate mocks base method.
+func (m *MockCalculatorController) Validate(arg0 string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Validate", arg0)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Validate indicates an expected call of Validate.
+func (mr *MockCalculatorControllerMockRecorder) Validate(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Validate", reflect.TypeOf((*MockCalculatorController)(nil).Validate), arg0)
+}
 
 // MockCalculatorRepository is a mock of CalculatorRepository interface.
 type MockCalculatorRepository struct {

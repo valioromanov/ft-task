@@ -15,16 +15,16 @@ var _ = Describe("Presenter", mockutil.Mockable(func(helper *mockutil.Helper) {
 
 	var (
 		recorder    *httptest.ResponseRecorder
-		controller  mocks.MockCalculatorController
+		controller  *mocks.MockCalculatorController
 		mockContext *gin.Context
-		presenter   *calculator.CalculatorRepository
+		presenter   *calculator.Presenter
 	)
 
 	BeforeEach(func() {
 		recorder = httptest.NewRecorder()
 		mockContext, _ = gin.CreateTestContext(recorder)
-		controllerPointer := mocks.NewMockCalculatorController(helper.Controller())
-		presenter = calculator.NewPresenter(controllerPointer)
+		controller = mocks.NewMockCalculatorController(helper.Controller())
+		presenter = calculator.NewPresenter(controller)
 	})
 
 }))
