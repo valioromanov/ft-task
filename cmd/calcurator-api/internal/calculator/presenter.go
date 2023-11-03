@@ -8,6 +8,12 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+type CalculatorController interface {
+	Evaluate(string) (int, error)
+	Validate(string) error
+	GetErrors() InvalidExpression
+}
+
 type Presenter struct {
 	controller CalculatorController
 }
@@ -42,8 +48,38 @@ func (p *Presenter) Evaluate(ctx *gin.Context) {
 		return
 	}
 
-	logrus.Info(fmt.Sprintf("response: %s", resp.ToString()))
-	ctx.Data(http.StatusOK, "application/json", []byte(resp.ToString()))
+	logrus.Info(fmt.Sprintf("response: %d", resp.Result))
+	ctx.JSON(http.StatusOK, resp)
+}
+
+func (p *Presenter) Validate(ctx *gin.Context) {
+	expression, err := p.extractBody(ctx)
+	logrus.Info(fmt.Sprintf("new validate request recieved: %s", expression))
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, err.Error())
+		logrus.Error(fmt.Sprintf("invalid body: %s", err.Error()))
+		return
+	}
+	var validateResponse ValidateResponse
+	if err := p.controller.Validate(expression.Expression); err != nil {
+		validateResponse.Valid = false
+		validateResponse.Reason = err.Error()
+		logrus.Info(fmt.Sprintf("Valid: %t with reason: %s", validateResponse.Valid, validateResponse.Reason))
+		ctx.JSON(http.StatusBadRequest, validateResponse)
+		return
+	}
+	logrus.Info(fmt.Sprintf("Valid: %t", validateResponse.Valid))
+	validateResponse.Valid = true
+	ctx.JSON(http.StatusBadRequest, validateResponse)
+}
+
+func (p *Presenter) GetErrors(ctx *gin.Context) {
+	logrus.Info("new getErrors request recieved")
+	invalids := p.controller.GetErrors()
+
+	invalidsResponse := invalids.ToGetErrorsResponse()
+
+	ctx.JSON(http.StatusOK, invalidsResponse)
 }
 
 func (p *Presenter) extractBody(ctx *gin.Context) (ExpressionRequest, error) {

@@ -1,7 +1,6 @@
 package calculator
 
 import (
-	"encoding/json"
 	"fmt"
 )
 
@@ -11,6 +10,45 @@ type ExpressionRequest struct {
 
 type ExpressionResponse struct {
 	Result int `json:"result"`
+}
+
+type ValidateResponse struct {
+	Valid  bool   `json:"valid"`
+	Reason string `json:"reason,omitempty"`
+}
+
+type InvalidData struct {
+	Frequency int
+	Type      string
+}
+
+type InvalidKey struct {
+	Endpoint   string
+	Expression string
+}
+
+type InvalidExpression map[InvalidKey]InvalidData
+
+type GetErrorResponse struct {
+	Expression string `json:"expression"`
+	Endpoint   string `json:"endpoint"`
+	Frequency  int    `json:"frequency"`
+	Type       string `json:"type"`
+}
+
+func (ie InvalidExpression) ToGetErrorsResponse() []GetErrorResponse {
+	errResponses := make([]GetErrorResponse, 0)
+	for key, val := range ie {
+		errResp := GetErrorResponse{
+			Expression: key.Expression,
+			Endpoint:   key.Endpoint,
+			Frequency:  val.Frequency,
+			Type:       val.Type,
+		}
+		errResponses = append(errResponses, errResp)
+	}
+
+	return errResponses
 }
 
 func (er ExpressionResponse) ToExpressionResponse(i interface{}) (ExpressionResponse, error) {
@@ -23,12 +61,4 @@ func (er ExpressionResponse) ToExpressionResponse(i interface{}) (ExpressionResp
 	}
 
 	return resp, nil
-}
-
-func (er ExpressionResponse) ToString() string {
-	str, err := json.Marshal(er)
-	if err != nil {
-		fmt.Println(err.Error()) // TODO add to logger
-	}
-	return string(str)
 }

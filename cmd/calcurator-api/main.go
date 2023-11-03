@@ -20,11 +20,15 @@ func handleError(err error, m string) {
 func main() {
 
 	calculatorRepo := calculatorRepo.Calculator{}
-	calculatorController := calculator.NewCalculatorController(&calculatorRepo)
+
+	invalids := make(calculator.InvalidExpression)
+	calculatorController := calculator.NewCalculatorController(&calculatorRepo, invalids)
 	presenter := calculator.NewPresenter(calculatorController)
 
 	handler := gin.New()
 	handler.POST("/evaluate", presenter.Evaluate)
+	handler.POST("/validate", presenter.Validate)
+	handler.GET("/errors", presenter.GetErrors)
 
 	logrus.Info("starting http server...")
 	httpServer := &http.Server{
