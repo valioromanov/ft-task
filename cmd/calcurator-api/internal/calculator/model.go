@@ -2,6 +2,7 @@ package calculator
 
 import (
 	"fmt"
+	"ft-calculator/pkg/facade"
 )
 
 type ExpressionRequest struct {
@@ -17,18 +18,6 @@ type ValidateResponse struct {
 	Reason string `json:"reason,omitempty"`
 }
 
-type InvalidData struct {
-	Frequency int
-	Type      string
-}
-
-type InvalidKey struct {
-	Endpoint   string
-	Expression string
-}
-
-type InvalidExpression map[InvalidKey]InvalidData
-
 type GetErrorResponse struct {
 	Expression string `json:"expression"`
 	Endpoint   string `json:"endpoint"`
@@ -36,7 +25,7 @@ type GetErrorResponse struct {
 	Type       string `json:"type"`
 }
 
-func (ie InvalidExpression) ToGetErrorsResponse() []GetErrorResponse {
+func ToGetErrorsResponse(ie facade.InvalidExpression) []GetErrorResponse {
 	errResponses := make([]GetErrorResponse, 0)
 	for key, val := range ie {
 		errResp := GetErrorResponse{

@@ -6,6 +6,7 @@ package cmd
 import (
 	"fmt"
 	calculatorRepo "ft-calculator/pkg/calculator"
+	"ft-calculator/pkg/facade"
 
 	"github.com/spf13/cobra"
 )
@@ -13,13 +14,9 @@ import (
 // validateCmd represents the validate command
 var validateCmd = &cobra.Command{
 	Use:   "validate",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Validate the exression",
+	Long: `Tell if the given expression is valid 
+		to be executed with evaluate command`,
 	Run: func(cmd *cobra.Command, args []string) {
 		runValidate(expressionStatement)
 	},
@@ -27,7 +24,10 @@ to quickly create a Cobra application.`,
 
 func runValidate(exression string) {
 	calculatorRepo := calculatorRepo.Calculator{}
-	controller := NewCalculatorController(&calculatorRepo)
+
+	invalids := make(facade.InvalidExpression)
+	facade := facade.NewCalulatorFacade(&calculatorRepo, invalids)
+	controller := NewCalculatorController(facade)
 	err := controller.Validate(exression)
 
 	if err != nil {
@@ -41,7 +41,7 @@ func runValidate(exression string) {
 
 func init() {
 	rootCmd.AddCommand(validateCmd)
-	validateCmd.Flags().StringVarP(&expressionStatement, "expression", "e", "", "expression to be evaluated")
+	validateCmd.Flags().StringVarP(&expressionStatement, "expression", "e", "", "expression to be validated")
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command

@@ -5,6 +5,7 @@ import (
 	"ft-calculator/cmd/calcurator-api/internal/calculator"
 	"ft-calculator/pkg/app"
 	calculatorRepo "ft-calculator/pkg/calculator"
+	"ft-calculator/pkg/facade"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -21,9 +22,9 @@ func main() {
 
 	calculatorRepo := calculatorRepo.Calculator{}
 
-	invalids := make(calculator.InvalidExpression)
-	calculatorController := calculator.NewCalculatorController(&calculatorRepo, invalids)
-	presenter := calculator.NewPresenter(calculatorController)
+	invalids := make(facade.InvalidExpression)
+	facade := facade.NewCalulatorFacade(&calculatorRepo, invalids)
+	presenter := calculator.NewPresenter(facade)
 
 	handler := gin.New()
 	handler.POST("/evaluate", presenter.Evaluate)

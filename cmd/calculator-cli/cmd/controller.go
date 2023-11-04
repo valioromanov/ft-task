@@ -1,29 +1,29 @@
 package cmd
 
-type CalculatorRepository interface {
-	Calculate([]int, []string) int
-	Validate(string) ([]int, []string, error)
+type CalculatorFacade interface {
+	Evaluate(string) (int, error)
+	Validate(string) error
 }
 
 type CalculatorController struct {
-	calculatorRepo CalculatorRepository
+	facade CalculatorFacade
 }
 
-func NewCalculatorController(calculatorRepo CalculatorRepository) *CalculatorController {
+func NewCalculatorController(calculatorRepo CalculatorFacade) *CalculatorController {
 	return &CalculatorController{
 		calculatorRepo,
 	}
 }
 
 func (c *CalculatorController) Evaluate(expression string) (int, error) {
-	nums, ops, err := c.calculatorRepo.Validate(expression)
+	result, err := c.facade.Evaluate(expression)
 	if err != nil {
 		return 0, err
 	}
-	return c.calculatorRepo.Calculate(nums, ops), nil
+	return result, nil
 }
 
 func (c *CalculatorController) Validate(expression string) error {
-	_, _, err := c.calculatorRepo.Validate(expression)
+	err := c.facade.Validate(expression)
 	return err
 }
