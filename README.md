@@ -18,6 +18,9 @@ Both commands need a flag -e/--expression which is the expression that will be e
 In order to check if it is running properly you should navigate to `cd ./cmd/calcularot-cli/` then run
 `go run main.go [COMMAND] [FLAG]`. You can run `go run main.go -h/--help` for a help.
 
+<img width="1019" alt="image" src="https://github.com/valioromanov/ft-task/assets/15982194/ac19c105-f9cb-4086-a89f-42aa4cd74681">
+
+
 # calculator-api
 This provides 3 endpoints:
  - \evaluate - POST
@@ -61,3 +64,17 @@ The response is HTTP 200 OK with </br>
 </br>
 !!!IMPORTANT - If you want to start the server from localhost you should navigate to `cd ./cmd/calcurator-api/` and then `go run main.go`
 It will start a server which listen on localhost:8080
+
+<img width="1019" alt="image" src="https://github.com/valioromanov/ft-task/assets/15982194/3c045cb9-92b4-4c28-aad7-10cdd9f1790b">
+
+<img width="1019" alt="image" src="https://github.com/valioromanov/ft-task/assets/15982194/c33de81d-b01a-48f0-bafe-d70bb11b4cff">
+
+<img width="1019" alt="image" src="https://github.com/valioromanov/ft-task/assets/15982194/706ff9b9-839a-4400-8a7e-72f09c5fcfc5">
+
+<img width="1007" alt="image" src="https://github.com/valioromanov/ft-task/assets/15982194/70859883-bb3c-4945-acd3-8b0155ab18bc">
+
+
+
+
+
+
