@@ -31,7 +31,7 @@ func runValidate(exression string) {
 	err := controller.Validate(exression)
 
 	if err != nil {
-		fmt.Println("The expression '%s' is not valid!", exression)
+		fmt.Printf("The expression '%s' is not valid!\n", exression)
 		fmt.Printf("Reason: %s \n", err.Error())
 		return
 	}
