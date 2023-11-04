@@ -51,12 +51,16 @@ func (p *Presenter) Evaluate(ctx *gin.Context) {
 func (p *Presenter) Validate(ctx *gin.Context) {
 	expression, err := p.extractBody(ctx)
 	logrus.Info(fmt.Sprintf("new validate request recieved: %s", expression))
+
+	var validateResponse ValidateResponse
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, err.Error())
+		validateResponse.Valid = false
+		validateResponse.Reason = err.Error()
 		logrus.Error(fmt.Sprintf("invalid body: %s", err.Error()))
+		ctx.JSON(http.StatusBadRequest, validateResponse)
 		return
 	}
-	var validateResponse ValidateResponse
+
 	if err := p.controller.Validate(expression.Expression); err != nil {
 		validateResponse.Valid = false
 		validateResponse.Reason = err.Error()
@@ -64,9 +68,9 @@ func (p *Presenter) Validate(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, validateResponse)
 		return
 	}
-	logrus.Info(fmt.Sprintf("Valid: %t", validateResponse.Valid))
 	validateResponse.Valid = true
-	ctx.JSON(http.StatusBadRequest, validateResponse)
+	logrus.Info(fmt.Sprintf("Valid: %t", validateResponse.Valid))
+	ctx.JSON(http.StatusOK, validateResponse)
 }
 
 func (p *Presenter) GetErrors(ctx *gin.Context) {
