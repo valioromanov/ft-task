@@ -51,7 +51,6 @@ func (f *Facade) addInvalid(expression, endpoint, err string) {
 	}
 	data, ok := f.invalids[invalidKey]
 	if ok {
-		logrus.Info("in add invalid: ", data.Frequency)
 		data.Frequency = data.Frequency + 1
 		invalidData := InvalidData{
 			Type:      err,
