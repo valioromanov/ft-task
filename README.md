@@ -1,6 +1,6 @@
 # ft-task
 
-#Unit tests
+# Unit tests
 You can execute unit tests from the terminal. 
 In order to execute them you should go to the root directory and choose which unit test you want to execute.
 If you want to run the calculator repository tests you need to execute `make calculator-repo-tests`.
@@ -11,7 +11,7 @@ If you want to run all tests you need to execute `make all-tests`.
 You can get the coverage of the tests with `make get-coverage` - this will make a file that contains the rows that are covered by the tests.
 !!!IMPORTANT - In order to run `make get-coverage` there should not be any focused tests.
 
-#calculator-cli
+# calculator-cli
 There are 2 available commands that can be run from the terminal.
 `evaluate` - It will give you the result of the expression
 `validate` - It will validate the expression
@@ -19,7 +19,7 @@ Both commands need a flag -e/--expression which is the expression that will be e
 In order to check if it is running properly you should navigate to `cd ./cmd/calcularot-cli/` then run
 `go run main.go [COMMAND] [FLAG]`. You can run `go run main.go -h/--help` for a help.
 
-#calculator-api
+# calculator-api
 This provides 3 endpoints:
  - \evaluate - POST
  - \validate - POST
