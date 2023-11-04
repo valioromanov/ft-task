@@ -3,3 +3,76 @@
 
 // Package mocks is a generated GoMock package.
 package mocks
+
+import (
+	facade "ft-calculator/pkg/facade"
+	reflect "reflect"
+
+	gomock "github.com/golang/mock/gomock"
+)
+
+// MockCalculatorFacade is a mock of CalculatorFacade interface.
+type MockCalculatorFacade struct {
+	ctrl     *gomock.Controller
+	recorder *MockCalculatorFacadeMockRecorder
+}
+
+// MockCalculatorFacadeMockRecorder is the mock recorder for MockCalculatorFacade.
+type MockCalculatorFacadeMockRecorder struct {
+	mock *MockCalculatorFacade
+}
+
+// NewMockCalculatorFacade creates a new mock instance.
+func NewMockCalculatorFacade(ctrl *gomock.Controller) *MockCalculatorFacade {
+	mock := &MockCalculatorFacade{ctrl: ctrl}
+	mock.recorder = &MockCalculatorFacadeMockRecorder{mock}
+	return mock
+}
+
+// EXPECT returns an object that allows the caller to indicate expected use.
+func (m *MockCalculatorFacade) EXPECT() *MockCalculatorFacadeMockRecorder {
+	return m.recorder
+}
+
+// Evaluate mocks base method.
+func (m *MockCalculatorFacade) Evaluate(arg0 string) (int, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Evaluate", arg0)
+	ret0, _ := ret[0].(int)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// Evaluate indicates an expected call of Evaluate.
+func (mr *MockCalculatorFacadeMockRecorder) Evaluate(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Evaluate", reflect.TypeOf((*MockCalculatorFacade)(nil).Evaluate), arg0)
+}
+
+// GetErrors mocks base method.
+func (m *MockCalculatorFacade) GetErrors() facade.InvalidExpression {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetErrors")
+	ret0, _ := ret[0].(facade.InvalidExpression)
+	return ret0
+}
+
+// GetErrors indicates an expected call of GetErrors.
+func (mr *MockCalculatorFacadeMockRecorder) GetErrors() *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetErrors", reflect.TypeOf((*MockCalculatorFacade)(nil).GetErrors))
+}
+
+// Validate mocks base method.
+func (m *MockCalculatorFacade) Validate(arg0 string) error {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "Validate", arg0)
+	ret0, _ := ret[0].(error)
+	return ret0
+}
+
+// Validate indicates an expected call of Validate.
+func (mr *MockCalculatorFacadeMockRecorder) Validate(arg0 interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "Validate", reflect.TypeOf((*MockCalculatorFacade)(nil).Validate), arg0)
+}

@@ -4,7 +4,7 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
-//go:generate mockgen --source=controller.go --destination mocks/controller.go --package mocks
+//go:generate mockgen --source=facade.go --destination mocks/facade.go --package mocks
 
 type CalculatorRepository interface {
 	Calculate([]int, []string) int
