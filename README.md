@@ -12,8 +12,8 @@ You can get the coverage of the tests with `make get-coverage` - this will make 
 
 # calculator-cli
 There are 2 available commands that can be run from the terminal.</br>
-`evaluate` - It will give you the result of the expression
-`validate` - It will validate the expression
+`evaluate` - It will give you the result of the expression</br>
+`validate` - It will validate the expression</br>
 Both commands need a flag -e/--expression which is the expression that will be evaluated or validated.
 In order to check if it is running properly you should navigate to `cd ./cmd/calcularot-cli/` then run
 `go run main.go [COMMAND] [FLAG]`. You can run `go run main.go -h/--help` for a help.
