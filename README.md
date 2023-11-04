@@ -2,12 +2,12 @@
 
 # Unit tests
 choose which unit test you want to execute.
-If you want to run the calculator repository tests you need to execute `make calculator-repo-tests`.
-If you want to run the facade tests you need to execute `make calculator-facade-tests`.
-If you want to run the calculator api tests you need to execute `make calculator-api-tests`.
-If you want to run all tests you need to execute `make all-tests`.
+If you want to run the calculator repository tests you need to execute `make calculator-repo-tests`. </br>
+If you want to run the facade tests you need to execute `make calculator-facade-tests`. </br>
+If you want to run the calculator api tests you need to execute `make calculator-api-tests`. </br>
+If you want to run all tests you need to execute `make all-tests`. </br>
 
-You can get the coverage of the tests with `make get-coverage` - this will make a file that contains the rows that are covered by the tests.
+You can get the coverage of the tests with `make get-coverage` - this will make a file that contains the rows that are covered by the tests. </br>
 !!!IMPORTANT - In order to run `make get-coverage` there should not be any focused tests.
 
 # calculator-cli
@@ -31,24 +31,24 @@ and returns HTTP 200OK with the result of the expression when everything is vali
   - plus
   - minus
   - multiplied by
-  - divided by
-If the body is not valid HTTP 403 Bad Request will be returned with the proper message
+  - divided by </br>
+If the body is not valid HTTP 403 Bad Request will be returned with the proper message.</br>
 
 The \validate endpoint receives the same object as above `{
     "expression": "What is <number> <operator> <number> [..<operator> <number>]"
-}` 
-This endpoint returns HTTP 200 OK with 
+}` </br> 
+This endpoint returns HTTP 200 OK with </br>
 `{
     "valid": true
-}` when the body is valid.
-And HTTP 403 Bad Request with 
+}` when the body is valid. </br>
+And HTTP 403 Bad Request with </br>
 `{
     "valid": false,
     "reason": <reason>
-}` when the expression is not valid
+}` when the expression is not valid</br>
 
-The \errors endpoint returns all errors that occurred while the server is up.
-The response is HTTP 200 OK with 
+The \errors endpoint returns all errors that occurred while the server is up. </br>
+The response is HTTP 200 OK with </br>
 `[
     {
         "expression": <expression>,
@@ -58,6 +58,6 @@ The response is HTTP 200 OK with
     }
     ...
 ]`
-
+</br>
 !!!IMPORTANT - If you want to start the server from localhost you should navigate to `cd ./cmd/calcurator-api/` and then `go run main.go`
 It will start a server which listen on localhost:8080
