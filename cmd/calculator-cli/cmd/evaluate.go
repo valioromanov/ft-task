@@ -5,28 +5,35 @@ package cmd
 
 import (
 	"fmt"
+	calculatorRepo "ft-calculator/pkg/calculator"
 
 	"github.com/spf13/cobra"
 )
 
+var expressionStatement string
+
 // evaluateCmd represents the evaluate command
 var evaluateCmd = &cobra.Command{
 	Use:   "evaluate",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Short: "Returns the result of the expression",
+	Long: `Returns the result of the expression:
+		For example if you send What is 3 plus 1
+		it returns 3`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("evaluate called")
+		runEvaluate(expressionStatement)
 	},
+}
+
+func runEvaluate(exression string) {
+	calculatorRepo := calculatorRepo.Calculator{}
+	controller := NewCalculatorController(&calculatorRepo)
+	result, _ := controller.Evaluate(exression)
+	fmt.Println(result)
 }
 
 func init() {
 	rootCmd.AddCommand(evaluateCmd)
-
+	evaluateCmd.Flags().StringVarP(&expressionStatement, "expression", "e", "", "expression to be evaluated")
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
