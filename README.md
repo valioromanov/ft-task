@@ -11,7 +11,7 @@ You can get the coverage of the tests with `make get-coverage` - this will make 
 !!!IMPORTANT - In order to run `make get-coverage` there should not be any focused tests.
 
 # calculator-cli
-There are 2 available commands that can be run from the terminal.
+There are 2 available commands that can be run from the terminal.</br>
 `evaluate` - It will give you the result of the expression
 `validate` - It will validate the expression
 Both commands need a flag -e/--expression which is the expression that will be evaluated or validated.
