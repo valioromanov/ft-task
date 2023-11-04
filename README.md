@@ -1,8 +1,7 @@
 # ft-task
 
 # Unit tests
-You can execute unit tests from the terminal. 
-In order to execute them you should go to the root directory and choose which unit test you want to execute.
+choose which unit test you want to execute.
 If you want to run the calculator repository tests you need to execute `make calculator-repo-tests`.
 If you want to run the facade tests you need to execute `make calculator-facade-tests`.
 If you want to run the calculator api tests you need to execute `make calculator-api-tests`.
