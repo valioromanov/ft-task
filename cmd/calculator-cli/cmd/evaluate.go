@@ -6,6 +6,7 @@ package cmd
 import (
 	"fmt"
 	calculatorRepo "ft-calculator/pkg/calculator"
+	"ft-calculator/pkg/facade"
 
 	"github.com/spf13/cobra"
 )
@@ -26,8 +27,15 @@ var evaluateCmd = &cobra.Command{
 
 func runEvaluate(exression string) {
 	calculatorRepo := calculatorRepo.Calculator{}
-	controller := NewCalculatorController(&calculatorRepo)
-	result, _ := controller.Evaluate(exression)
+
+	invalids := make(facade.InvalidExpression)
+	facade := facade.NewCalulatorFacade(&calculatorRepo, invalids)
+	controller := NewCalculatorController(facade)
+	result, err := controller.Evaluate(exression)
+	if err != nil {
+		fmt.Printf("The expression '%s' is not valid: %s \n", exression, err.Error())
+		return
+	}
 	fmt.Println(result)
 }
 

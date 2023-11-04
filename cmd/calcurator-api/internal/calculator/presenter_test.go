@@ -7,6 +7,7 @@ import (
 	"ft-calculator/cmd/calcurator-api/internal/calculator"
 	"ft-calculator/cmd/calcurator-api/internal/calculator/mocks"
 	"ft-calculator/helper/mockutil"
+	"ft-calculator/pkg/facade"
 	"net/http"
 	"net/http/httptest"
 
@@ -20,7 +21,7 @@ var _ = Describe("Presenter", mockutil.Mockable(func(helper *mockutil.Helper) {
 
 	var (
 		recorder    *httptest.ResponseRecorder
-		controller  *mocks.MockCalculatorController
+		mockFacade  *mocks.MockCalculatorFacade
 		mockContext *gin.Context
 		presenter   *calculator.Presenter
 	)
@@ -28,8 +29,8 @@ var _ = Describe("Presenter", mockutil.Mockable(func(helper *mockutil.Helper) {
 	BeforeEach(func() {
 		recorder = httptest.NewRecorder()
 		mockContext, _ = gin.CreateTestContext(recorder)
-		controller = mocks.NewMockCalculatorController(helper.Controller())
-		presenter = calculator.NewPresenter(controller)
+		mockFacade = mocks.NewMockCalculatorFacade(helper.Controller())
+		presenter = calculator.NewPresenter(mockFacade)
 	})
 
 	Describe("Evaluate", func() {
@@ -40,7 +41,7 @@ var _ = Describe("Presenter", mockutil.Mockable(func(helper *mockutil.Helper) {
 					"expression": expression,
 				}
 				mockContext.Request, _ = http.NewRequest("POST", gomock.Any().String(), createBody(reqBody))
-				controller.EXPECT().Evaluate(expression).Return(4, nil)
+				mockFacade.EXPECT().Evaluate(expression).Return(4, nil)
 			})
 
 			It("returns StatusOK and the result", func() {
@@ -73,7 +74,7 @@ var _ = Describe("Presenter", mockutil.Mockable(func(helper *mockutil.Helper) {
 					"expression": invalidExpression,
 				}
 				mockContext.Request, _ = http.NewRequest("POST", gomock.Any().String(), createBody(reqBody))
-				controller.EXPECT().Evaluate(invalidExpression).Return(0, fmt.Errorf("some-error"))
+				mockFacade.EXPECT().Evaluate(invalidExpression).Return(0, fmt.Errorf("some-error"))
 			})
 
 			It("returns StatusBadRequest and an error message", func() {
@@ -94,7 +95,7 @@ var _ = Describe("Presenter", mockutil.Mockable(func(helper *mockutil.Helper) {
 					"expression": expression,
 				}
 				mockContext.Request, _ = http.NewRequest("POST", gomock.Any().String(), createBody(reqBody))
-				controller.EXPECT().Validate(expression).Return(nil)
+				mockFacade.EXPECT().Validate(expression).Return(nil)
 			})
 
 			It("it should return StatusOK", func() {
@@ -126,7 +127,7 @@ var _ = Describe("Presenter", mockutil.Mockable(func(helper *mockutil.Helper) {
 				}
 
 				mockContext.Request, _ = http.NewRequest("POST", gomock.Any().String(), createBody(reqBody))
-				controller.EXPECT().Validate(invalidExpression).Return(fmt.Errorf("some-error"))
+				mockFacade.EXPECT().Validate(invalidExpression).Return(fmt.Errorf("some-error"))
 			})
 
 			It("it should return StatusBadRequest and return proper object", func() {
@@ -153,12 +154,12 @@ var _ = Describe("Presenter", mockutil.Mockable(func(helper *mockutil.Helper) {
 			endpoint = "\\evaluate"
 			frequency = 1
 			typeErr = "some-type"
-			exptectedControllerResponse := calculator.InvalidExpression{
-				calculator.InvalidKey{endpoint, expression}: calculator.InvalidData{frequency, typeErr},
+			exptectedControllerResponse := facade.InvalidExpression{
+				facade.InvalidKey{Endpoint: endpoint, Expression: expression}: facade.InvalidData{Frequency: frequency, Type: typeErr},
 			}
 			BeforeEach(func() {
 				mockContext.Request, _ = http.NewRequest("GET", gomock.Any().String(), nil)
-				controller.EXPECT().GetErrors().Return(exptectedControllerResponse)
+				mockFacade.EXPECT().GetErrors().Return(exptectedControllerResponse)
 			})
 
 			It("should return StatusOK", func() {

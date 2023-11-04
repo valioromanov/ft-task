@@ -1,10 +1,10 @@
-package calculator_test
+package facade_test
 
 import (
 	"fmt"
-	"ft-calculator/cmd/calcurator-api/internal/calculator"
-	"ft-calculator/cmd/calcurator-api/internal/calculator/mocks"
 	"ft-calculator/helper/mockutil"
+	"ft-calculator/pkg/facade"
+	"ft-calculator/pkg/facade/mocks"
 
 	"github.com/golang/mock/gomock"
 	. "github.com/onsi/ginkgo/v2"
@@ -15,14 +15,14 @@ var _ = Describe("Calculator Controller", mockutil.Mockable(func(helper *mockuti
 
 	var (
 		mockRepository *mocks.MockCalculatorRepository
-		controller     calculator.CalculatorController
-		invalids       calculator.InvalidExpression
+		mockFacade     facade.Facade
+		invalids       facade.InvalidExpression
 	)
 
 	BeforeEach(func() {
 		mockRepository = mocks.NewMockCalculatorRepository(helper.Controller())
-		invalids = make(calculator.InvalidExpression)
-		controller = calculator.NewCalculatorController(mockRepository, invalids)
+		invalids = make(facade.InvalidExpression)
+		mockFacade = *facade.NewCalulatorFacade(mockRepository, invalids)
 	})
 
 	Context("Evaluate", func() {
@@ -38,7 +38,7 @@ var _ = Describe("Calculator Controller", mockutil.Mockable(func(helper *mockuti
 			})
 
 			It("should return the result", func() {
-				actualResult, err := controller.Evaluate(gomock.Any().String())
+				actualResult, err := mockFacade.Evaluate(gomock.Any().String())
 				Expect(err).ToNot(HaveOccurred())
 				Expect(actualResult).To(Equal(exptectedResponse))
 			})
@@ -50,15 +50,15 @@ var _ = Describe("Calculator Controller", mockutil.Mockable(func(helper *mockuti
 				gomock.InOrder(
 					mockRepository.EXPECT().Validate(gomock.Any()).Return(nil, nil, fmt.Errorf(expErr)),
 				)
-				errors := controller.GetErrors()
+				errors := mockFacade.GetErrors()
 				Expect(errors).To(BeEmpty())
 			})
 
 			It("should add in invalid in-memory map and return an error", func() {
-				_, err := controller.Evaluate(gomock.Any().String())
+				_, err := mockFacade.Evaluate(gomock.Any().String())
 				Expect(err).To(HaveOccurred())
 				Expect(err.Error()).To(Equal(expErr))
-				errors := controller.GetErrors()
+				errors := mockFacade.GetErrors()
 				Expect(errors).ToNot(BeEmpty())
 			})
 		})
@@ -74,7 +74,7 @@ var _ = Describe("Calculator Controller", mockutil.Mockable(func(helper *mockuti
 			})
 
 			It("should return no error", func() {
-				err := controller.Validate(gomock.Any().String())
+				err := mockFacade.Validate(gomock.Any().String())
 				Expect(err).ToNot(HaveOccurred())
 			})
 		})
@@ -84,15 +84,15 @@ var _ = Describe("Calculator Controller", mockutil.Mockable(func(helper *mockuti
 				gomock.InOrder(
 					mockRepository.EXPECT().Validate(gomock.Any()).Return(nil, nil, fmt.Errorf("some-error")),
 				)
-				errors := controller.GetErrors()
+				errors := mockFacade.GetErrors()
 				Expect(errors).To(BeEmpty())
 			})
 
 			It("should add in invalid in-memory map return an error", func() {
-				err := controller.Validate(gomock.Any().String())
+				err := mockFacade.Validate(gomock.Any().String())
 				Expect(err).To(HaveOccurred())
 				Expect(err.Error()).To(Equal("some-error"))
-				errors := controller.GetErrors()
+				errors := mockFacade.GetErrors()
 				Expect(errors).ToNot(BeEmpty())
 			})
 		})

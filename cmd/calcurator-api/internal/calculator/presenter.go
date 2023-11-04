@@ -2,6 +2,7 @@ package calculator
 
 import (
 	"fmt"
+	"ft-calculator/pkg/facade"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -9,14 +10,18 @@ import (
 )
 
 //go:generate mockgen --source=presenter.go --destination mocks/presenter.go --package mocks
-
+type CalculatorFacade interface {
+	Evaluate(string) (int, error)
+	Validate(string) error
+	GetErrors() facade.InvalidExpression
+}
 type Presenter struct {
-	controller CalculatorController
+	facade CalculatorFacade
 }
 
-func NewPresenter(controller CalculatorController) *Presenter {
+func NewPresenter(facade CalculatorFacade) *Presenter {
 	return &Presenter{
-		controller,
+		facade,
 	}
 }
 
@@ -29,7 +34,7 @@ func (p *Presenter) Evaluate(ctx *gin.Context) {
 		return
 	}
 
-	answer, err := p.controller.Evaluate(expression.Expression)
+	answer, err := p.facade.Evaluate(expression.Expression)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, err.Error())
 		logrus.Error(fmt.Sprintf("invalid body: %s", err.Error()))
@@ -61,7 +66,7 @@ func (p *Presenter) Validate(ctx *gin.Context) {
 		return
 	}
 
-	if err := p.controller.Validate(expression.Expression); err != nil {
+	if err := p.facade.Validate(expression.Expression); err != nil {
 		validateResponse.Valid = false
 		validateResponse.Reason = err.Error()
 		logrus.Info(fmt.Sprintf("Valid: %t with reason: %s", validateResponse.Valid, validateResponse.Reason))
@@ -75,9 +80,9 @@ func (p *Presenter) Validate(ctx *gin.Context) {
 
 func (p *Presenter) GetErrors(ctx *gin.Context) {
 	logrus.Info("new getErrors request recieved")
-	invalids := p.controller.GetErrors()
-
-	invalidsResponse := invalids.ToGetErrorsResponse()
+	invalids := p.facade.GetErrors()
+	invalidsResponse := make([]GetErrorResponse, 0)
+	invalidsResponse = ToGetErrorsResponse(invalids)
 
 	ctx.JSON(http.StatusOK, invalidsResponse)
 }
