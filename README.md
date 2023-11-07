@@ -8,7 +8,8 @@ If you want to run the calculator api tests you need to execute `make calculator
 If you want to run all tests you need to execute `make all-tests`. </br>
 
 You can get the coverage of the tests with `make get-coverage` - this will make a file that contains the rows that are covered by the tests. </br>
-!!!IMPORTANT - In order to run `make get-coverage` there should not be any focused tests.
+!!!IMPORTANT - You need to add ginkgo in your `PATH`, if you get an error `command not found: ginkgo` and you have already installed ginkgo 
+</br> - In order to run `make get-coverage` there should not be any focused tests.
 
 # calculator-cli
 There are 2 available commands that can be run from the terminal.</br>
@@ -26,7 +27,7 @@ This provides 3 endpoints:
  - \evaluate - POST
  - \validate - POST
  - \errors - GET
- The \evaluate endpoint receives an object
+ </br>The \evaluate endpoint receives an object
 `{
     "expression": "What is <number> <operator> <number> [..<operator> <number>]"
 }`
