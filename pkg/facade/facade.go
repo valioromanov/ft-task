@@ -1,9 +1,5 @@
 package facade
 
-import (
-	"github.com/sirupsen/logrus"
-)
-
 //go:generate mockgen --source=facade.go --destination mocks/facade.go --package mocks
 
 type CalculatorRepository interface {
